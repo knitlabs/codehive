@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>DSA Interview Questions</title>
+    <style>
+      body {
+        font-family: "Poppins", sans-serif;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+        line-height: 1.8;
+        color: #333;
+        background: linear-gradient(120deg, #000, #fff);
+        color: #eaeaea;
+      }
+
+      h1 {
+        text-align: center;
+        font-family: "Poppins", sans-serif;
+        color: #fff; /* Solid white color for the heading */
+        font-size: 2.5rem;
+        margin-bottom: 30px;
+        font-weight: 600;
+      }
+
+      #debug-info {
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        padding: 15px;
+        margin-bottom: 20px;
+        white-space: pre-wrap;
+        word-break: break-word;
+        border-radius: 8px;
+        color: #d3d3d3;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+      }
+
+      #search-container {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        margin-bottom: 25px;
+        justify-content: space-between;
+      }
+
+      #search-input,
+      #company-filter,
+      #difficulty-filter {
+        padding: 12px;
+        flex: 1;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        border-radius: 8px;
+        font-size: 1rem;
+        background: rgba(0, 0, 0, 0.6);
+        color: #eaeaea;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+        transition: all 0.3s ease-in-out;
+      }
+
+      #search-input:focus,
+      #company-filter:focus,
+      #difficulty-filter:focus {
+        border-color: #fff;
+        box-shadow: 0 4px 8px rgba(255, 255, 255, 0.3);
+        outline: none;
+      }
+
+      #questions-table {
+        width: 100%;
+        border-collapse: collapse;
+        margin-top: 20px;
+        background: linear-gradient(120deg, #000000, #444444);
+        border-radius: 10px;
+        overflow: hidden;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+        animation: fadeIn 0.6s ease-in-out;
+        color: #eaeaea;
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      #questions-table th,
+      #questions-table td {
+        border: 1px solid rgba(255, 255, 255, 0.2);
+        padding: 15px;
+        text-align: left;
+        font-size: 1rem;
+      }
+
+      #questions-table th {
+        background: linear-gradient(120deg, #1f1f1f, #555);
+        color: #fff;
+        text-transform: uppercase;
+        font-weight: bold;
+        letter-spacing: 0.5px;
+      }
+
+      #questions-table tbody tr:nth-child(even) {
+        background-color: rgba(255, 255, 255, 0.05);
+      }
+
+      #questions-table tbody tr:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+        cursor: pointer;
+        transition: background-color 0.3s ease-in-out;
+      }
+
+      #questions-table td a {
+        text-decoration: none;
+        color: #fff;
+        font-weight: 500;
+      }
+
+      #questions-table td a:hover {
+        color: #f1f1f1;
+        text-decoration: underline;
+      }
+
+      #error-message {
+        color: #ff5252;
+        background: rgba(0, 0, 0, 0.7);
+        padding: 15px;
+        border: 1px solid rgba(255, 255, 255, 0.3);
+        margin-bottom: 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+        font-size: 1rem;
+      }
+
+      /* Add subtle animations */
+      input,
+      select,
+      table,
+      th,
+      td {
+        transition: all 0.3s ease-in-out;
+      }
+
+      @media (max-width: 768px) {
+        #search-container {
+          flex-direction: column;
+        }
+
+        #search-input,
+        #company-filter,
+        #difficulty-filter {
+          font-size: 0.9rem;
+          padding: 10px;
+        }
+
+        #questions-table th,
+        #questions-table td {
+          font-size: 0.9rem;
+          padding: 10px;
+        }
+      }
+
+      @media (max-width: 480px) {
+        body {
+          padding: 10px;
+        }
+
+        h1 {
+          font-size: 1.8rem;
+        }
+
+        #search-input,
+        #company-filter,
+        #difficulty-filter {
+          font-size: 0.8rem;
+          padding: 8px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Data Structures and Algorithms: Interview Guide</h1>
+
+    <div id="search-container">
+      <input type="text" id="search-input" placeholder="Search questions..." />
+      <select id="company-filter">
+        <option value="">All Companies</option>
+      </select>
+      <select id="difficulty-filter">
+        <option value="">All Difficulties</option>
+        <option value="Easy">Easy</option>
+        <option value="Medium">Medium</option>
+        <option value="Hard">Hard</option>
+      </select>
+    </div>
+
+    <table id="questions-table">
+      <thead>
+        <tr>
+          <th>LeetCode ID</th>
+          <th>Title</th>
+          <th>Acceptance</th>
+          <th>Difficulty</th>
+          <th>Frequency</th>
+        </tr>
+      </thead>
+      <tbody id="questions-body">
+        <!-- Questions will be dynamically populated here -->
+      </tbody>
+    </table>
+
+    <script>
+      // Global variables
+      let questionsData = [];
+
+      // Error display function
+      function displayError(message) {
+        const errorDiv = document.getElementById("error-message");
+        const debugDiv = document.getElementById("debug-info");
+
+        errorDiv.textContent = message;
+        debugDiv.textContent = message;
+        console.error(message);
+      }
+
+      // Robust CSV parsing function
+      function parseCSV(csvText) {
+        // Remove UTF-8 BOM
+        csvText = csvText.replace(/^\uFEFF/, "");
+
+        // Split lines, handling different line endings
+        const lines = csvText.trim().split(/\r\n|\n|\r/);
+
+        if (lines.length <= 1) {
+          displayError("No data found in the CSV");
+          return [];
+        }
+
+        // Extract headers
+        const headers = lines[0].split(",").map((header) => header.trim());
+
+        // Parse data rows
+        const data = [];
+        for (let i = 1; i < lines.length; i++) {
+          const line = lines[i];
+
+          // Skip empty lines
+          if (!line.trim()) continue;
+
+          try {
+            const values = parseCSVLine(line);
+
+            if (values.length >= headers.length) {
+              const rowData = {};
+              headers.forEach((header, index) => {
+                rowData[header] = (values[index] || "").trim();
+              });
+              data.push(rowData);
+            } else {
+              console.warn(
+                `Skipping line ${i + 1} due to incorrect number of fields`
+              );
+            }
+          } catch (error) {
+            console.error(`Error parsing line ${i + 1}:`, error);
+          }
+        }
+
+        return data;
+      }
+
+      // Advanced CSV line parsing
+      function parseCSVLine(line) {
+        const result = [];
+        let current = "";
+        let inQuotes = false;
+
+        for (let i = 0; i < line.length; i++) {
+          const char = line[i];
+
+          if (char === '"' && line[i + 1] === '"') {
+            current += '"';
+            i++;
+          } else if (char === '"') {
+            inQuotes = !inQuotes;
+          } else if (char === "," && !inQuotes) {
+            result.push(current);
+            current = "";
+          } else {
+            current += char;
+          }
+        }
+
+        result.push(current);
+        return result.map((field) => field.replace(/^"|"$/g, "").trim());
+      }
+
+      // Populate companies dropdown
+      function populateCompaniesDropdown(data) {
+        const companyFilter = document.getElementById("company-filter");
+        const allCompanies = new Set();
+
+        data.forEach((question) => {
+          const companies = (question["Company"] || "").split(",");
+          companies.forEach((company) => {
+            const trimmedCompany = company.trim();
+            if (trimmedCompany) {
+              allCompanies.add(trimmedCompany);
+            }
+          });
+        });
+
+        // Sort companies alphabetically
+        const sortedCompanies = Array.from(allCompanies).sort();
+        sortedCompanies.forEach((company) => {
+          const option = document.createElement("option");
+          option.value = company;
+          option.textContent = company;
+          companyFilter.appendChild(option);
+        });
+      }
+
+      // Render questions in the table
+      function renderQuestions(data) {
+        const questionsBody = document.getElementById("questions-body");
+        questionsBody.innerHTML = ""; // Clear existing rows
+
+        data.forEach((question) => {
+          const row = document.createElement("tr");
+
+          // Create LeetCode ID cell
+          const idCell = document.createElement("td");
+          idCell.textContent = question["ID"] || "";
+
+          // Create Title cell with LeetCode link
+          const titleCell = document.createElement("td");
+          const titleLink = document.createElement("a");
+          titleLink.href = question["Leetcode Question Link"] || "#";
+          titleLink.textContent = question["Title"] || "";
+          titleLink.target = "_blank";
+          titleCell.appendChild(titleLink);
+
+          // Create other cells
+          const cellContents = [
+            question["Acceptance"] || "",
+            question["Difficulty"] || "",
+            question["Frequency"] || "",
+          ];
+
+          row.appendChild(idCell);
+          row.appendChild(titleCell);
+          cellContents.forEach((cellText) => {
+            const cell = document.createElement("td");
+            cell.textContent = cellText;
+            row.appendChild(cell);
+          });
+
+          questionsBody.appendChild(row);
+        });
+      }
+
+      // Filter questions
+      function filterQuestions() {
+        const searchInput = document
+          .getElementById("search-input")
+          .value.toLowerCase();
+        const companyFilter = document.getElementById("company-filter").value;
+        const difficultyFilter =
+          document.getElementById("difficulty-filter").value;
+
+        const filteredQuestions = questionsData.filter((question) => {
+          const matchesSearch =
+            searchInput === "" ||
+            (question["Title"] || "").toLowerCase().includes(searchInput) ||
+            (question["Company"] || "").toLowerCase().includes(searchInput);
+
+          const matchesCompany =
+            companyFilter === "" ||
+            (question["Company"] || "")
+              .split(",")
+              .map((c) => c.trim())
+              .includes(companyFilter);
+
+          const matchesDifficulty =
+            difficultyFilter === "" ||
+            question["Difficulty"] === difficultyFilter;
+
+          return matchesSearch && matchesCompany && matchesDifficulty;
+        });
+
+        renderQuestions(filteredQuestions);
+      }
+
+      // Load and process data
+      async function loadData() {
+        try {
+          // REPLACE THIS WITH YOUR ACTUAL CSV CONTENT
+          const response = await fetch("combined_output.csv");
+          const csvText = await response.text();
+
+          // Parse CSV
+          questionsData = parseCSV(csvText);
+
+          if (questionsData.length === 0) {
+            displayError("No questions found in the data");
+            return;
+          }
+
+          // Populate UI
+          populateCompaniesDropdown(questionsData);
+          renderQuestions(questionsData);
+
+          // Add event listeners for filtering
+          document
+            .getElementById("search-input")
+            .addEventListener("input", filterQuestions);
+          document
+            .getElementById("company-filter")
+            .addEventListener("change", filterQuestions);
+          document
+            .getElementById("difficulty-filter")
+            .addEventListener("change", filterQuestions);
+        } catch (error) {
+          displayError("Error processing CSV data: " + error.message);
+        }
+      }
+
+      // Load data when the page loads
+      document.addEventListener("DOMContentLoaded", loadData);
+    </script>
+  </body>
+</html>
